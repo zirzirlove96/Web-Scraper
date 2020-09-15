@@ -1,16 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
-#urlë¥¼ ìš”ì²­í•  ìˆ˜ ìˆë‹¤.
-#requestë¥¼ ë¨¼ì € ì„¤ì¹˜í•´ ì¤€ë‹¤.
+#url¸¦ ¿äÃ»ÇÒ ¼ö ÀÖ´Ù.
+#request¸¦ ¸ÕÀú ¼³Ä¡ÇØ ÁØ´Ù.
 
-LIMIT = 50 #startë²ˆí˜¸
+LIMIT = 50 #start¹øÈ£
 INDEED_URL = f"https://www.indeed.com/jobs?q=python&limit={LIMIT}"
 
-def get_last_page():
+def extract_indeed_pages():
     result = requests.get(INDEED_URL)
-    #html ì •ë³´ë¥¼ ëª¨ë‘ ê°€ì ¸ì˜¨ë‹¤.
+    #html Á¤º¸¸¦ ¸ğµÎ °¡Á®¿Â´Ù.
     soup = BeautifulSoup(result.text, "html.parser")
-    ##indeed_requests.textì˜ ì •ë³´ì—ì„œ htmlì— ë“¤ì–´ê°„ ì½”ë“œë§Œ ì¶”ì¶œ
+    ##indeed_requests.textÀÇ Á¤º¸¿¡¼­ html¿¡ µé¾î°£ ÄÚµå¸¸ ÃßÃâ
 
     pagination = soup.find("div", {"class": "pagination"})
 
@@ -20,24 +20,21 @@ def get_last_page():
     for link in links[:-1] :
       pages.append(int(link.string))
   
-    max_page = pages[-1]#ë§ˆì§€ë§‰ nextë¥¼ ë¹¼ê¸° ìœ„í•´
-#í˜ì´ì§€ ìˆ˜ë¥¼ ì¶œë ¥í•˜ëŠ” ê³¼ì •
+    max_page = pages[-1]#¸¶Áö¸· next¸¦ »©±â À§ÇØ
+#ÆäÀÌÁö ¼ö¸¦ Ãâ·ÂÇÏ´Â °úÁ¤
     return max_page
 
 def extract_job(html):
-    #divíƒœìŠ¤ì˜ titleìš”ì†Œë¥¼ ì°¾ì•„ ê¸€ì˜ ì œëª© ì¶”ì¶œ
+    #divÅÂ½ºÀÇ title¿ä¼Ò¸¦ Ã£¾Æ ±ÛÀÇ Á¦¸ñ ÃßÃâ
     title = html.find("a")["title"]
-    #íšŒì‚¬ëª… ì¶”ì¶œ
+    #È¸»ç¸í ÃßÃâ 
     company = html.find("span",{"class":"company"})
-    if company:
-        company_anchor=company.find("a")
-        if company_anchor is not None:
-            company=str(company_anchor.string)
-        else:
-            company=str(company.string)
-        company = company.strip()
+    company_anchor=company.find("a")
+    if company_anchor is not None:
+        company=str(company_anchor.string)
     else:
-        company=None
+        company=str(company.string)
+    company = company.strip()
     location = html.find("div",{"class":"recJobLoc"})["data-rc-loc"]
     job_id=html["data-jk"]
     return {"title":title,
@@ -47,22 +44,15 @@ def extract_job(html):
     
 
 
-def extract_jobs(last_page):
+def extract_indeed_jobs(last_page):
     jobs = []
     for page in range(last_page):
         print(f"Web Scraping {page}")
-        #print(f"&start={page*LIMIT}")#í˜ì´ì§€ì˜ ìˆ˜ë¥¼ êµ¬í•  ìˆ˜ ìˆëŠ” í•¨ìˆ˜
+        #print(f"&start={page*LIMIT}")#ÆäÀÌÁöÀÇ ¼ö¸¦ ±¸ÇÒ ¼ö ÀÖ´Â ÇÔ¼ö
         result = requests.get(f"{INDEED_URL}&start={page*LIMIT}")
         soup = BeautifulSoup(result.text, "html.parser")
         results = soup.find_all("div", {"class" : "jobsearch-SerpJobCard"})
         for result in results:
             job = extract_job(result)
             jobs.append(job)
-    return jobs
-
-
-##indeed í˜ì´ì§€ì˜ íƒ€ì´í‹€, ì§ì—…ëª…, íšŒì‚¬ëª…, ì£¼ì†Œ ë“±ì„ returnê°’ìœ¼ë¡œ ë‚´ë³´ë‚´ëŠ” í•¨ìˆ˜ 
-def get_jobs() :
-    last_page = get_last_page()
-    jobs = extract_jobs(last_page)
     return jobs

@@ -1,7 +1,7 @@
-from indeed import extract_indeed_pages,extract_indeed_jobs
+from indeed import get_jobs as get_indeed_jobs
 #indeed.py의 함수를 사용하기 위해
 
-last_page = extract_indeed_pages()
+indeed_jobs = get_indeed_jobs()
 
-print(extract_indeed_jobs(last_page))
+print(indeed_jobs)
 
