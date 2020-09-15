@@ -23,14 +23,19 @@ def extract_job(html):
     company = company.get_text(strip=True)
     location = location.get_text(strip=True).strip("-")
     #print(company, location)
+    job_id = html["data-jobid"]#지원서 링크 
     
-    return {"title":title, "company":company, "location":location}
+    return {"title":title,
+            "company":company,
+            "location":location,
+            "apply_link": f"https://stackoverflow.com/jobs/{job_id}"}
     
 
 #페이지에 대한 직업들 추출하는 함수
 def extract_jobs(last_page):
     jobs=[]
     for page in range(last_page):
+        print(f"StackOverflow Web Scraping {page}")
         result = requests.get(f"{URL}&pg={page+1}")
         soup = BeautifulSoup(result.text,"html.parser")
         results = soup.find_all("div",{"class":"-job"})
