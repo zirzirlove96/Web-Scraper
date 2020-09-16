@@ -46,11 +46,11 @@ def extract_job(html):
             "link" : f"https://www.indeed.com/viewjob?jk={job_id}"}
     
 
-
+#jobsearch-SerpJobCard는 extract_job에서 추출하는 데이터들을 표기되는 부분이다 
 def extract_jobs(last_page):
     jobs = []
     for page in range(last_page):
-        print(f"Web Scraping {page}")
+        print(f"Indeed Web Scraping {page}")
         #print(f"&start={page*LIMIT}")#페이지의 수를 구할 수 있는 함수
         result = requests.get(f"{INDEED_URL}&start={page*LIMIT}")
         soup = BeautifulSoup(result.text, "html.parser")

@@ -8,6 +8,6 @@ so_jobs = get_so_jobs()#stackoverflow 웹
 
 jobs = indeed_jobs+so_jobs
 
-print(save_to_file(jobs))
+save_to_file(jobs)
 
 
