@@ -19,16 +19,21 @@ def report():
     word = request.args.get('word')#index.html에서 입력폼에 입력한 값을 받아올 수 있는 함수.
     #return f"your are looking for a job in {word}"
 
-    fromdb = db.get(word)
-    if fromdb:#db에 이미 있으면
-        jobs = fromdb
+    existingJobs = db.get(word)
+    if existingJobs:#db에 이미 있으면
+        jobs = existingJobs
     else:
         #db에 없으면 찾아서 db에 저장
         jobs = get_jobs(word)# so.py의 get_jobs 메서드를 사용
         db[word]=jobs
     if word=="":#입력 폼에 아무것도 입력하지 않았을 때 
         return redirect("/")
-    return render_template("report.html",number=len(jobs),searchingBy=word)#report.html에 값을 보내준다.
+    return render_template(
+        "report.html",
+        number=len(jobs),
+        searchingBy=word,
+        jobs=jobs
+    )#report.html에 값을 보내준다.
 
 """
 @app.route("/contact")
