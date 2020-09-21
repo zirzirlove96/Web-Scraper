@@ -15,20 +15,20 @@
 <body>
     <h1>Job Search Result</h1>
     <h3>Find {{number}} result in {{searchingBy}}</h3>
+    <a href="/export?word={{searchingBy}}">Export to CSV</a>
     <section><!--데이터의 테이블 만들어 준다.-->
         <h4>Title</h4>
         <h4>Company</h4>
         <h4>Location</h4>
         <h4>Link</h4>
-
         {% for job in jobs %}
+        <!--파이썬 코드를 html에서 실행할 때 사용-->
+        <!--flaskEx.py에서 넘어온 jobs 데이터를 for문을 이용하여 하나씩 나오게 한다.-->
             <span>{{job.title}}</span>
             <span>{{job.company}}</span>
             <span>{{job.location}}</span>
             <a href="{{job.link}}" target="_blank">Apply</a>
         {% endfor %}<!--반복문 끝내기-->
     </section>
-        <!--파이썬 코드를 html에서 실행한다면 {%%}해줘야 한다.-->
-        <!--flaskEx.py에서 넘어온 jobs 데이터를 for문을 이용하여 하나씩 나오게 한다.-->
 </body>
 </html>

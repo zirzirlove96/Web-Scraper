@@ -1,6 +1,7 @@
-from flask import Flask,render_template,request,redirect
+from flask import Flask,render_template,request,redirect,send_file
 #request는 데이터를 웹사이트에 보내는 역할도 하게 된다.
 from so import get_jobs
+from exporter import save_to_file
 
 app = Flask("SuperScrapper")
 
@@ -34,6 +35,21 @@ def report():
         searchingBy=word,
         jobs=jobs
     )#report.html에 값을 보내준다.
+
+
+@app.route("/export")
+def export():
+    try:
+        word = request.args.get("word")
+        if not word:
+            raise Exception()#word가 존재하지 않으면 except를 수행시킨다.
+        jobs = db.get(word)
+        if not jobs:
+            raise Exception()#word가 있긴하나 db는 없다면
+        save_to_file(jobs)
+        return send_file("jobs.csv")
+    except:
+        return redirect("/")
 
 """
 @app.route("/contact")
