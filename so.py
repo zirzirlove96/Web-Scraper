@@ -51,6 +51,6 @@ def get_jobs(word) : #flaskEx.py에서 입력된 데이터 값을 넣어 stackov
     URL=f"https://stackoverflow.com/jobs?q={word}&sort=i"
     """URL에 사용하고 싶은 단어를 사용하여 직업을 찾고 싶기 때문에"""
     last_page = get_last_page(URL)
-    jobs = extract_jobs(1,URL)
+    jobs = extract_jobs(last_page,URL)
     return jobs
     
