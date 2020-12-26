@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://andybrewer.github.io/mvp/mvp.css" rel="stylesheet"></link>
+  <title>Jobs</title>
+</head>
+<body>
+  <header>
+    <h1>Remote Jobs</h1>
+    <h4>{{size}} {{parameter}} jobs found.</h4>
+    <a href=""><h5>Export csv</h5></a>
+    <br/>
+    <a href="/">Go back</a>
+  </header>
+
+  <main>
+    {% for data_set in dictionary.values() %}
+    <div>
+      {% for data in data_set %}
+      <div>
+        <h5>{{data[0]}}</h5>
+      </div>
+      <h5>{{data[1]}}</h5>
+      <a href="https://stackoverflow.com{{data[2]}}" target="_blank">Apply</a>
+      <hr/>
+      {% endfor %}
+    </div>
+    {%endfor%}
+  </main>
+</body>
+</html>
