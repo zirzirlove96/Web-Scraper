@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://andybrewer.github.io/mvp/mvp.css" rel="stylesheet"></link>
+</head>
+
+<body>
+  <header>
+    <h1>Reddit Reader</h1>
+    <h3>Reading: {% for key in keys %}r/{{key}} {%endfor%}</h3>
+  </header>
+
+  <main>
+    {% for data in subreddit_data.values() %}
+    <div>
+      {% for value in data %}
+      <div>
+        <a href="https://reddit.com{{value[1]}}" target="_blank">{{value[0]}}</a>
+            <h4>{{value[2]}} upvotes r/{{value[3]}}</h4>
+        <hr/>
+      </div>
+      {% endfor %}
+    </div>
+     {% endfor %}
+  </main>
+</body>
+
+</html>
